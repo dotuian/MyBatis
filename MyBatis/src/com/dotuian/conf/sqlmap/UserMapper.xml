@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dotuian.conf.sqlmap.UserMapper">
+
+    <!-- resultMap=""可以用来解决数据库字段名和Entity中属性名不匹配的问题。 -->
+    <resultMap id="userResultMap" type="com.dotuian.entity.UserEntity">
+      <id property="id" column="id" />
+      <result property="username" column="username"/>
+      <result property="password" column="password"/>
+      <result property="sex" column="sex"/>
+      <result property="birthday" column="birthday"/>
+      <result property="hobby" column="hobby"/>
+      <result property="salary" column="salary"/>
+      <result property="memo" column="memo"/>
+    </resultMap>
+
+    <!-- 
+		SQL映射文件有很少的几个顶级元素（按照它们应该被定义的顺序）：
+		 cache - 配置给定命名空间的缓存。
+		 cache-ref – 从其他命名空间引用缓存配置。
+		 resultMap – 最复杂，也是最有力量的元素，用来描述如何从数据库结果集中来加载你的对象。
+		 sql – 可以重用的SQL块，也可以被其他语句引用。
+		 insert – 映射插入语句
+		 update – 映射更新语句
+		 delete – 映射删除语句
+		 select – 映射查询语句
+     -->
+
+    <!-- 使用resultType="com.dotuian.entity.UserEntity"，返回的结果为一个UserEntity对象 -->
+	<select id="selectUserById" parameterType="int" resultType="com.dotuian.entity.UserEntity">
+		select * from USER where id = #{id}
+	</select>
+
+    <!-- 使用resultType="com.dotuian.entity.UserEntity"，返回的结果为一个UserEntity对象 -->
+	<select id="selectUserByName" parameterType="java.lang.String" resultType="com.dotuian.entity.UserEntity">
+		select * from USER where username = #{username}
+	</select>
+	
+	<!-- 使用resultType="hashmap"，返回为一个HashMap对象。数据库表中所有的列被自动映射到java.util.HashMap的键上 -->
+    <select id="selectUser3" parameterType="int" resultType="hashmap">
+        select * from USER where id = #{id}
+    </select>
+
+    <select id="selectUser4" parameterType="int" resultMap="userResultMap">
+        select * from USER where id = #{id}
+    </select>
+
+	<!--  -->
+	<insert id="insertUser" parameterType="com.dotuian.entity.UserEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into USER
+		(username,password,sex,birthday,hobby,salary,memo)
+		values
+		(#{username},#{password},#{sex},#{birthday},#{hobby},#{salary},#{memo})
+	</insert>
+    
+    <!--  -->
+	<update id="updateUser" parameterType="com.dotuian.entity.UserEntity">
+		update USER set
+		username = #{username},
+		password = #{password},
+		sex = #{sex},
+		birthday = #{birthday},
+		hobby = #{hobby},
+		salary = #{salary},
+		memo = #{memo} 
+		where id = #{id}
+	</update>
+
+	<delete id="deleteUser" parameterType="int">
+		delete from USER where id = #{id}
+	</delete>
+	
+    <select id="selectAllUser" resultMap="userResultMap">
+        select * from USER 
+    </select>
+	
+	
+</mapper>
+
