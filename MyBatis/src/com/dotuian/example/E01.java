@@ -31,7 +31,7 @@ public class E01 {
             try{
                 // ===============================================================
                 UserEntity user = (UserEntity) session.selectOne(
-                        "com.dotuian.conf.sqlmap.UserMapper.selectUser", 1);
+                        "com.dotuian.conf.sqlmap.UserMapper.selectUserById", 1);
                 if (user != null) {
                     System.out.println(user.toString());
                 }
